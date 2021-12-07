@@ -2,20 +2,26 @@ using UnityEngine;
 
 public class PlayerContorller : MonoBehaviour
 {
-    private Vector2 lookDirection;
-    private Vector2 rubyPosition;
-    private Vector2 rubyMove;
-
+    #region 公開
     public float moveSpeed;
-
-    private Rigidbody2D rb;
-    private Animator rubyAnimator;
-    
+       
     public int maxHp = 5;
     [Range(0, 5)]
     public int currentHp;
 
-    // Start is called before the first frame update
+    public GameObject bulletPrefab;
+    #endregion
+    
+    #region 私人
+    private Vector2 lookDirection;
+    private Vector2 rubyPosition;
+    private Vector2 rubyMove;
+
+    private Rigidbody2D rb;
+    private Animator rubyAnimator;
+    #endregion
+
+    #region 事件
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -54,14 +60,32 @@ public class PlayerContorller : MonoBehaviour
             Application.LoadLevel("Scnce1");
         }
 
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Launch();
+        }
         
     }
+    #endregion
 
+    #region 方法
     public void ChangeHealth(int amount)
     {
         currentHp = Mathf.Clamp(currentHp + amount, 0, 5);
         print(currentHp);
 
     }
+
+    private void Launch()
+    {
+        GameObject bulletObject = Instantiate(bulletPrefab,
+                rb.position, Quaternion.identity);
+
+        Bullet bullet = bulletObject.GetComponent<Bullet>();
+
+        bullet.Launch(lookDirection, 300);
+
+        rubyAnimator.SetTrigger("Launch");
+    }
+    #endregion
 }
