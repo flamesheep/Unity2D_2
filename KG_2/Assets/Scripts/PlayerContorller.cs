@@ -81,7 +81,7 @@ public class PlayerContorller : MonoBehaviour
         GameObject bulletObject = Instantiate(bulletPrefab,
                 rb.position, Quaternion.identity);
 
-        Bullet bullet = bulletObject.GetComponent<Bullet>();
+        Bullet bullet = bulletPrefab.GetComponent<Bullet>();
 
         bullet.Launch(lookDirection, 300);
 
